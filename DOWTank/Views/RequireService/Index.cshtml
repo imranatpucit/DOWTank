@@ -1,0 +1,75 @@
+﻿@model System.Data.DataTable
+@using System.Data;
+@{
+    ViewBag.Title = "Require Service";
+}
+
+
+<div class="well well-lg">
+    <!--title-->
+    <div class="row mt10 mb20">
+        <div class="col-md-12">
+            <h4 class="dow-color">Require Serivce <span class="ml3">(@ViewBag.TotalRecords)</span></h4>
+            <p>List of tanks that require testing.</p>
+        </div>
+    </div>
+    <!--/title-->
+
+
+    <!--list-->
+    <div class="row">
+     <div class="col-md-12">
+            <table class="table table-condensed table-striped table-bordered table-responsive table-hover" id="tblRequireService">
+                <thead>
+                    <tr>
+                        @foreach (DataColumn col in Model.Columns)
+                        {
+                            if (@col.ColumnName != "EquipmentID" && @col.ColumnName != "TankLastTestDT" && @col.ColumnName != "Type of Service")
+                            {
+                            <th>@col.ColumnName</th>
+                            }
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (DataRow row in Model.Rows)
+                    {         
+                        <tr>
+                            @foreach (DataColumn col in Model.Columns)
+                            {
+                                if (@col.ColumnName != "EquipmentID" && @col.ColumnName != "TankLastTestDT" && @col.ColumnName != "Type of Service")
+                                {
+                                <td>@row[col.ColumnName]</td>
+                                }
+                            }
+                        </tr> 
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!--/list-->
+
+</div>
+
+<!--script-->
+@section scripts
+{
+  
+    <script>
+        $(function() {
+
+            $("#tblRequireService").dataTable(
+                {
+                    "bLengthChange": false,
+                    searching: false,
+                    ordering: false,
+                    pagination: true,
+                    pageLength: 50,
+                    "sDom": '<"top"flp>rt<"bottom"i><"clear">',
+                    responsive: true
+                });
+            //mark end of document ready
+        });
+    </script>
+}

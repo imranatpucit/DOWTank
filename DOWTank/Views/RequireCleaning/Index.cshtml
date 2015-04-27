@@ -1,0 +1,74 @@
+﻿@model System.Data.DataTable
+@using System.Data;
+@{
+    ViewBag.Title = "Require Cleaning";
+}
+
+<div class="well well-lg">
+    <!--title-->
+    <div class="row mt10 mb20">
+        <div class="col-md-12">
+            <h4 class="dow-color">Require Cleaning <span class="ml3">(@ViewBag.TotalRecords)</span></h4>
+            <p>List of idle tanks that have a status of dirty-empty or heel.</p>
+        </div>
+    </div>
+    <!--/title-->
+
+
+    <!--list-->
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-condensed table-striped table-bordered table-responsive table-hover" id="tblRequireCleaning">
+                <thead>
+                    <tr>
+                        @foreach (DataColumn col in Model.Columns)
+                        {
+                            if (@col.ColumnName != "EquipmentID" && @col.ColumnName != "2.5 YR" && @col.ColumnName != "5 YR" && @col.ColumnName != "Type of Service" && @col.ColumnName != "WPN")
+                            {
+                            <th>@col.ColumnName</th>
+                            }
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (DataRow row in Model.Rows)
+                    {         
+                        <tr>
+                            @foreach (DataColumn col in Model.Columns)
+                            {
+                                if (@col.ColumnName != "EquipmentID" && @col.ColumnName != "2.5 YR" && @col.ColumnName != "5 YR" && @col.ColumnName != "Type of Service" && @col.ColumnName != "WPN")
+                                {
+                                <td>@row[col.ColumnName]</td>
+                                }
+                            }
+                        </tr> 
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!--/list-->
+
+</div>
+
+<!--script-->
+@section scripts
+{
+  
+    <script>
+        $(function() {
+
+            $("#tblRequireCleaning").dataTable(
+                {
+                    "bLengthChange": false,
+                    searching: false,
+                    ordering: false,
+                    pagination: true,
+                    pageLength: 50,
+                    "sDom": '<"top"flp>rt<"bottom"i><"clear">',
+                    responsive: true
+                });
+            //mark end of document ready
+        });
+    </script>
+}

@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - DOW BBT - Tank</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="@Url.Content("~/Content/DataTables/css/jquery.dataTables.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/dataTables.responsive.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/css/select2.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/jquery.datetimepicker.css")" rel="stylesheet" />
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("DOW", "Index", "Home", null, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Require Cleaning", "Index", "RequireCleaning")</li>
+                    <li>@Html.ActionLink("Require Service", "Index", "RequireService")</li>
+                    <li>@Html.ActionLink("Search", "Index", "TankSearch")</li>
+                    <li>@Html.ActionLink("Tank Prep", "Prep", "Tank")</li>
+                    <li>@Html.ActionLink("Tank Arrival", "TankArrivalUpdate", "Tank")</li>
+                    <li>@Html.ActionLink("Audit Driver List", "AuditDriverList", "Report")</li>
+                    <li>@Html.ActionLink("Dispatch", "Index", "Dispatch")</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @Html.Partial("_alerts")
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Bridge Terminal Transport. All rights reserved.</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="@Url.Content("~/Scripts/DataTables/jquery.dataTables.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/dataTables.responsive.js")"></script>
+    <script src="@Url.Content("~/Scripts/select2.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.datetimepicker.js")"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

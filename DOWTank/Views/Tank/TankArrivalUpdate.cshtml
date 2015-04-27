@@ -1,0 +1,136 @@
+﻿@model DOWTank.Models.TankArrivalUpdatePostModel
+@{
+    ViewBag.Title = "Tank Arrival/Update";
+}
+
+<div class="well well-lg">
+    <!--title-->
+    <div class="row mt10 mb20">
+        <div class="col-md-12">
+            <h4 class="dow-color">Tank Arrival/Update</h4>
+        </div>
+    </div>
+    @using (Html.BeginForm("TankArrivalUpdate", "Tank", FormMethod.Post))
+    {
+        if (ViewData.ModelState.Keys.Any(k => ViewData.ModelState[k].Errors.Count() > 0))
+        { 
+        <div class="alert alert-danger">
+            <button class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            @Html.ValidationSummary(false, "Please correct the following items: ")
+        </div>
+        }
+        <div class="form-group text-right">
+            <input type="submit" value="Save Tank" class="btn btn-default btn-primary" />
+        </div>
+        <div class="form-group">
+            <div class="col-md-12 nopadding">
+                <label>Tank #:*</label>
+            </div>
+            <div class="row no-row-margin">
+                <input type="hidden" name="EquipmentAN" id="EquipmentAN" />
+                <div class="col-md-4 nopadding">
+                    <input id="ddlTankNumber" name="EquipmentID" type="hidden" style="width: 100%; box-sizing: border-box;">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-12 nopadding">
+                <label>Current Location:</label>
+            </div>
+            <div class="row no-row-margin">
+                <div class="col-md-4 nopadding">
+                    @Html.DropDownList("LoadPoint", null, new { @class = "form-control" })
+                </div>
+                <div class="col-md-4 col-md-offset-1 mt5">
+                    <input id="ddlCurrentLocation" name="LocationID" type="hidden" style="width: 100%; box-sizing: border-box;">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-12 nopadding">
+                <label>Tank Status:</label>
+            </div>
+            <div class="row no-row-margin">
+                <div class="col-md-3 nopadding">
+                    @Html.DropDownList("LoadStatusTypeCD", null, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+    }
+
+
+    <!--/well-->
+</div>
+
+
+<!--script-->
+@section scripts
+{
+    <script>
+        //select2
+        $(function () {
+            $("#LoadPoint").val('');
+            //Load Point ddl
+            $("#ddlCurrentLocation").select2({
+                minimumInputLength: 0,
+                cache: false,
+                ajax: {
+                    url: "/Tank/PopulateLoadPoint",
+                    dataType: 'json',
+                    quietMillis: 650,
+                    data: function (term) {
+                        return {
+                            searchTerm: term, // search term
+                            locationType: $("#LoadPoint").val()
+                        };
+                    },
+                    results: function (data) {
+                        return { results: data };
+                    }
+                }
+            });
+
+
+            //Equipment ddl
+            $("#ddlTankNumber").select2({
+                minimumInputLength: 1,
+                cache: false,
+                ajax: {
+                    url: "/Tank/PopulateEquipment",
+                    dataType: 'json',
+                    quietMillis: 650,
+                    data: function (term) {
+                        return {
+                            searchTerm: term // search term
+                        };
+                    },
+                    results: function (data) {
+                        return { results: data };
+                    }
+                }
+            });
+
+            $("#ddlTankNumber").change(function () {
+                var theSelectionId = $("#ddlTankNumber").select2('data').id;
+                var theSelectionText = $("#ddlTankNumber").select2('data').text;
+                console.log('theSelection ' + theSelectionText);
+                $("#EquipmentAN").val();
+                $.ajax({
+                    url: "/Tank/RefreshEquipment?equipmentId=" + theSelectionId,
+                    dataType: 'json',
+                    method: 'GET',
+                    success: function (response) {
+                        if (response) {
+                            console.log('response ' + response.LoadStatusTypeCD);
+                            $("#EquipmentAN").val(response.EquipmentAN);
+                            $("#LoadStatusTypeCD").val(response.LoadStatusTypeCD);
+                            $("#ddlCurrentLocation").select2("data", { id: response.LocationID, text: response.LocationDS });
+                            $("#LoadPoint").val('');
+                        }
+                    }
+                });
+            });
+
+        });
+    </script>
+}

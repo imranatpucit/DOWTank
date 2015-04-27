@@ -1,0 +1,349 @@
+﻿@model DOWTank.Models.TankPrepPostModel
+@{
+    ViewBag.Title = "Prep";
+}
+<div class="well well-lg">
+    <!--title-->
+    <div class="row mt10 mb20">
+        <div class="col-md-12">
+            <h4 class="dow-color">Tank Prep</h4>
+        </div>
+    </div>
+    @using (Html.BeginForm("Prep", "Tank", FormMethod.Post))
+    {
+        if (ViewData.ModelState.Keys.Any(k => ViewData.ModelState[k].Errors.Count() > 0))
+        { 
+        <div class="alert alert-danger">
+            <button class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            @Html.ValidationSummary(false, "Please correct the following items: ")
+        </div>
+        }
+        <div class="form-group text-right">
+            <input type="submit" value="Save Prep" class="btn btn-default btn-primary" />
+        </div>
+        <div class="form-group">
+            <div class="col-md-12 nopadding">
+                <label>Charge Code:*</label>
+            </div>
+            <div class="row no-row-margin">
+                <div class="col-md-4 nopadding">
+                    <input id="ddlChargeCode" name="ChargeCodeID" type="hidden" style="width: 100%; box-sizing: border-box;">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-12 nopadding">
+                <label>Shipment Number:*</label>
+            </div>
+            <div class="row no-row-margin">
+                <div class="col-md-4 nopadding">
+                    @Html.TextBoxFor(m => m.ShipmentAN, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-12 nopadding">
+                <label>Load Date:*</label>
+            </div>
+            <div class="row no-row-margin">
+                <div class="col-md-2 nopadding">
+                    @Html.TextBoxFor(m => m.ScheduledLoadDT, new { @class = "form-control datetimepicker" })
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-12 nopadding">
+                <label>Load Point:*</label>
+            </div>
+            <div class="row no-row-margin">
+                <div class="col-md-4 nopadding">
+                    @Html.DropDownList("LoadPoint", null, new { @class = "form-control" })
+                </div>
+                <div class="col-md-4 col-md-offset-1 mt5">
+                    <input id="ddlLoadPoint" name="FromLocationID" type="hidden" style="width: 100%; box-sizing: border-box;">
+                </div>
+            </div>
+        </div>
+        <div class="form-group row no-row-margin">
+            <div class="col-md-12 nopadding">
+                <label>Product:*</label>
+            </div>
+            <div class="row no-row-margin">
+                <div class="col-md-4 nopadding">
+                    <input id="ddlProduct" type="hidden" name="ProductID" style="width: 100%; box-sizing: border-box;">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-12 nopadding">
+                <label>Delivery Location:</label>
+            </div>
+            <div class="row no-row-margin">
+                <div class="col-md-4 nopadding">
+                    @Html.DropDownList("LoadPoint", null, new { @class = "form-control", @id = "ddlDestination", @name = "ddlDestination" })
+                </div>
+                <div class="col-md-4 col-md-offset-1 mt5">
+                    <input id="ddlDeliveryLocation" name="ToLocationID" type="hidden" style="width: 100%; box-sizing: border-box;">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-12 nopadding">
+                <label>Scheduled Delivery Date:</label>
+            </div>
+            <div class="row no-row-margin">
+                <div class="col-md-2 nopadding">
+                    <input type="text" class="form-control datetimepicker" name="ScheduledDeliveryDT">
+                </div>
+                <div class="col-md-1">
+                    <div class="checkbox">
+                        <label>
+                            @Html.CheckBoxFor(m => m.DeliverASAPFL)
+                            ASAP
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-12 nopadding">
+                <label>Fittings:</label>
+            </div>
+            <div class="row no-row-margin">
+                <div class="col-md-4 nopadding">
+                    @Html.DropDownList("FittingCD", null, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-12 nopadding">
+                <label>Tank Status:</label>
+            </div>
+            <div class="row no-row-margin">
+                <div class="col-md-3 nopadding">
+                    @Html.DropDownList("LoadStatusTypeCD", null, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-12 nopadding">
+                <label>Is this a Reload?:</label>
+            </div>
+            <div class="row no-row-margin">
+                <div class="col-md-1 nopadding">
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="ReloadFL" value="true" checked>
+                            Yes
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-1 nopadding">
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="ReloadFL" value="false">
+                            No
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-12 nopadding">
+                <label>Tank Number:</label>
+            </div>
+            <div class="row no-row-margin">
+                <div class="col-md-4 nopadding">
+                    <input id="ddlTankNumber" type="hidden" name="EquipmentID" style="width: 100%; box-sizing: border-box;">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-12 nopadding">
+                <label>Chassis:</label>
+            </div>
+            <div class="row no-row-margin">
+                <div class="col-md-4 nopadding">
+                    <input id="ddlChassis" type="hidden" name="ChassisEquipmentID" style="width: 100%; box-sizing: border-box;">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-12 nopadding">
+                <label>Block Contact:*</label>
+            </div>
+            <div class="row no-row-margin">
+                <div class="col-md-4 nopadding">
+                    <input id="ddlContact" name="ContactID" type="hidden" style="width: 100%; box-sizing: border-box;">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Comments:</label>
+            <textarea rows="5" cols="20" name="CommentsAn" class="form-control">@Model.CommentsAn</textarea>
+        </div>
+        <div class="form-group text-right">
+            <input type="submit" value="Save Prep" class="btn btn-default btn-primary mt20" />
+        </div>
+    }
+</div>
+
+<!--script-->
+@section scripts
+{
+
+    <script>
+
+        //datetimepicker
+        $(function () {
+            $('.datetimepicker').datetimepicker({
+                format: 'm/d/Y H:i'
+            });
+        });
+
+        //select2
+        $(function () {
+            //#region select2
+
+            // charge code ddl
+            $("#ddlChargeCode").select2({
+                minimumInputLength: 0,
+                cache: true,
+                ajax: {
+                    url: "/Tank/PopulateChargeCode",
+                    dataType: 'json',
+                    quietMillis: 650,
+                    data: function (term) {
+                        return {
+                            searchTerm: term // search term
+                        };
+                    },
+                    results: function (data) {
+                        return { results: data };
+                    }
+                }
+            });
+
+            //Load Point ddl
+            $("#ddlLoadPoint").select2({
+                minimumInputLength: 0,
+                cache: false,
+                ajax: {
+                    url: "/Tank/PopulateLoadPoint",
+                    dataType: 'json',
+                    quietMillis: 650,
+                    data: function (term) {
+                        return {
+                            searchTerm: term, // search term
+                            locationType: $("#LoadPoint").val()
+                        };
+                    },
+                    results: function (data) {
+                        return { results: data };
+                    }
+                }
+            });
+
+
+            //Destination ddl
+            $("#ddlDeliveryLocation").select2({
+                minimumInputLength: 0,
+                cache: false,
+                ajax: {
+                    url: "/Tank/PopulateLoadPoint",
+                    dataType: 'json',
+                    quietMillis: 650,
+                    data: function (term) {
+                        return {
+                            searchTerm: term, // search term
+                            locationType: $("#ddlDestination").val()
+                        };
+                    },
+                    results: function (data) {
+                        return { results: data };
+                    }
+                }
+            });
+
+            //Product ddl
+            $("#ddlProduct").select2({
+                minimumInputLength: 1,
+                cache: false,
+                ajax: {
+                    url: "/Tank/PopulateProduct",
+                    dataType: 'json',
+                    quietMillis: 650,
+                    data: function (term) {
+                        return {
+                            searchTerm: term // search term
+                        };
+                    },
+                    results: function (data) {
+                        return { results: data };
+                    }
+                }
+            });
+
+            //Equipment ddl
+            $("#ddlTankNumber").select2({
+                minimumInputLength: 1,
+                cache: false,
+                ajax: {
+                    url: "/Tank/PopulateEquipment",
+                    dataType: 'json',
+                    quietMillis: 650,
+                    data: function (term) {
+                        return {
+                            searchTerm: term // search term
+                        };
+                    },
+                    results: function (data) {
+                        return { results: data };
+                    }
+                }
+            });
+
+            //ddlChassis
+            $("#ddlChassis").select2({
+                minimumInputLength: 1,
+                cache: false,
+                ajax: {
+                    url: "/Tank/PopulateChassis",
+                    dataType: 'json',
+                    quietMillis: 650,
+                    data: function (term) {
+                        return {
+                            searchTerm: term // search term
+                        };
+                    },
+                    results: function (data) {
+                        return { results: data };
+                    }
+                }
+            });
+
+            //ddlContact
+            $("#ddlContact").select2({
+                minimumInputLength: 0,
+                cache: false,
+                ajax: {
+                    url: "/Tank/PopulateContacts",
+                    dataType: 'json',
+                    quietMillis: 650,
+                    data: function (term) {
+                        return {
+                            searchTerm: term // search term
+                        };
+                    },
+                    results: function (data) {
+                        return { results: data };
+                    }
+                }
+            });
+
+
+            //#endregion select2
+        });
+    </script>
+
+}

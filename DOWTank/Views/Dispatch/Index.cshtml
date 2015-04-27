@@ -1,0 +1,285 @@
+﻿@model DOWTank.Models.DispatchTankModel
+@{
+    ViewBag.Title = "Dispatch Tank";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="well well-lg">
+    <!--title-->
+    <div class="row mt10 mb20">
+        <div class="col-md-12">
+            <h4 class="dow-color">Dispatch</h4>
+        </div>
+    </div>
+
+    @using (Html.BeginForm("Index", "Dispatch", FormMethod.Post))
+    {
+        if (ViewData.ModelState.Keys.Any(k => ViewData.ModelState[k].Errors.Count() > 0))
+        {
+            <div class="alert alert-danger">
+                <button class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                @Html.ValidationSummary(false, "Please correct the following items: ")
+            </div>
+        }
+        <div class="form-group text-right">
+            <input type="submit" value="Dispatch Tank" class="btn btn-default btn-primary" />
+        </div>
+        <div class="form-group">
+            <div class="col-md-12 nopadding">
+                <label>Tank Number:</label>
+            </div>
+            <div class="row no-row-margin">
+                <div class="col-md-4 nopadding">
+                    <input id="ddlTankNumber" type="hidden" name= "intEquipmentId" style="width: 100%; box-sizing: border-box;">                   
+                </div>
+            </div>
+            <div class="col-md-12 nopadding">
+                <label>Last Move</label>
+            </div>
+
+            <div class="row no-row-margin">
+                <div class="col-md-4 nopadding">
+                    <label>Date:</label>
+                    <input type="text" id="txtLMDate" name="txtLMDate" disabled="disabled" class="form-control datetimepicker">
+                </div>
+                <div class="col-md-4 nopadding">
+                    <label>Chassis:</label>
+                    <input type="text" id="txtLMChassis" name="txtLMChassis" disabled="disabled" class="form-control">
+                </div>
+                <div class="col-md-4 nopadding">
+                    <label>Product:</label>
+                    <input type="text" id="txtLMProduct" name="txtLMProduct" disabled="disabled" class="form-control">
+                </div>
+            </div>
+            <div class="row no-row-margin">
+                <div class="col-md-4 nopadding">
+                    <label>Driver:</label>
+                    <input type="text" id="txtLMDriver" name="txtLMDriver" disabled="disabled" class="form-control">
+                </div>
+                <div class="col-md-4 nopadding">
+                    <label>To:</label>
+                    <input type="text" id="txtLMTO" name="txtLMTO" disabled="disabled" class="form-control">
+                </div>
+                <div class="col-md-4 nopadding">
+                    <label>On-Hire Block:</label>
+                    <input type="text" id="txtLMChargeBlock" name="txtLMChargeBlock" disabled="disabled" class="form-control">
+                </div>
+            </div>
+            <div class="row no-row-margin">
+                <div class="col-md-4 nopadding">
+                    <label>Charge Code:</label>
+                    <input type="text" id="txtLMChargeCode" name="txtLMChargeCode" disabled="disabled" class="form-control">
+                </div>
+                <div class="col-md-4 nopadding">
+                    <label>Shipment:</label>
+                    <input type="text" id="txtLMShipment" name="txtLMShipment" disabled="disabled" class="form-control">
+                </div>
+                <div class="col-md-4 nopadding">
+                    <label>Fittings:</label>
+                    <input type="text" id="txtLMFittings" name="txtLMFittings" disabled="disabled" class="form-control">
+                </div>
+            </div>
+            <div class="row no-row-margin">
+                <div class="col-md-4 nopadding">
+                    <label>Contact:</label>
+                    <input type="text" id="txtLMContact" name="txtLMContact" disabled="disabled" class="form-control">
+                </div>
+                <div class="col-md-4 nopadding">
+                    <label style="width: 100%;"></label>
+                    <input type="submit" id="btnCopyOver" value="Copy Over >>" formaction="javascript:CopyOverValues();">
+                </div>
+            </div>
+
+            <div class="col-md-12 nopadding">
+                <label>Current Dispatch Info</label>
+            </div>
+
+            <div class="row no-row-margin">
+                <div class="col-md-4 nopadding">
+                    <label>Chassis:</label>
+                    <input type="text" id="txtChassis" name="ScheduledDeliveryDT" class="form-control">                    
+                </div>
+                <div class="col-md-4 nopadding">
+                    <label>Product:</label>
+                    <input type="text" id="txtProduct" name="ScheduledDeliveryDT" class="form-control">
+                </div>
+                <div class="col-md-4 nopadding">
+                    <label>Driver:</label>
+                    <input type="text" name="intDriverId" class="form-control">
+                </div>
+            </div>
+            <div class="row no-row-margin">
+                <div class="col-md-4 nopadding">
+                    <label>Loading Point:</label>
+                    <input type="text" name="intLocationFrom" class="form-control">
+                </div>
+                <div class="col-md-4 nopadding">
+                    <label>Delivery Point:</label>
+                    <input type="text" name="intLocationTo" class="form-control">
+                </div>
+                <div class="col-md-4 nopadding">
+                    <label>On-Hire Block:</label>
+                    <input type="text" name="ScheduledDeliveryDT" class="form-control">
+                </div>
+            </div>
+            <div class="row no-row-margin">
+                <div class="col-md-4 nopadding">
+                    <label>Charge Code:</label>
+                    <input type="text" name="ScheduledDeliveryDT" class="form-control">
+                </div>
+                <div class="col-md-4 nopadding">
+                    <label>Shipment Number:</label>
+                    @Html.TextBoxFor(m => m.strShipmentAN, new { @class = "form-control" })
+                </div>
+                <div class="col-md-4 nopadding">
+                    <label>Tank Status:</label>
+                    <input type="text" name="sintLoadStatusTypeId" class="form-control">
+                </div>
+            </div>
+            <div class="row no-row-margin">
+                <div class="col-md-4 nopadding">
+                    <label>Is this a Reload?:</label>
+                    @Html.CheckBoxFor(m => m.bolIsReloadFL)
+                </div>
+                <div class="col-md-4 nopadding">
+                    <label>Waste Class:</label>
+                    <input type="text" name="ScheduledDeliveryDT" class="form-control">
+                </div>
+                <div class="col-md-4 nopadding">
+                    <label>Instructions/Reason:</label>
+                    <input type="text" name="ScheduledDeliveryDT" class="form-control">
+                </div>
+            </div>
+            <div class="row no-row-margin">
+                <div class="col-md-4 nopadding">
+                    <label>Additional Instruct:</label>
+                    <input type="text" name="ScheduledDeliveryDT" class="form-control">
+                </div>
+                <div class="col-md-4 nopadding">
+                    <label>Pro Number:</label>
+                    @Html.TextBoxFor(m => m.strProNumberAN, new { @class = "form-control datetimepicker" })
+                </div>
+                <div class="col-md-4 nopadding">
+                    <label>Dispatch Start:</label>
+                    @Html.TextBoxFor(m => m.dtmDispatchStart, new { @class = "form-control datetimepicker" })
+                </div>
+            </div>
+            <div class="row no-row-margin">
+                <div class="col-md-4 nopadding">
+                    <label>Dispatch End:</label>
+                    @Html.TextBoxFor(m => m.dtmDispatchEnd, new { @class = "form-control datetimepicker" })
+                </div>
+                <div class="col-md-4 nopadding">
+                    <label>ADDL Call Out Hours:</label>
+                    @Html.TextBoxFor(m => m.dblCallOutHoursAMT, new { @class = "form-control datetimepicker" })
+                </div>
+                <div class="col-md-4 nopadding">
+                    <label>Scheduled Delivery:</label>
+                    @Html.TextBoxFor(m => m.dtmScheduledDelivery, new { @class = "form-control datetimepicker" })
+                </div>
+            </div>
+            <div class="row no-row-margin">
+                <div class="col-md-4 nopadding">
+                    <label>Fittings:</label>
+                    <input type="text" name="ScheduledDeliveryDT" class="form-control">
+                </div>
+                <div class="col-md-4 nopadding">
+                    <label>Crane Lifts:</label>
+                    @Html.TextBoxFor(m => m.sintCraneLiftAmt, new { @class = "form-control" })
+                </div>
+                <div class="col-md-4 nopadding">
+                    <label>Block Contact:</label>
+                    <input type="text" name="ScheduledDeliveryDT" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Comments:</label>
+                @Html.TextAreaFor(m => m.strComments, new { @class = "form-control", rows="5", cols="20" })
+            </div>
+            <div class="form-group text-right">
+                <input type="submit" value="Dispatch Tank" class="btn btn-default btn-primary mt20" />
+            </div>
+        </div>
+    }
+</div>
+
+@section scripts
+{
+    <script>
+
+        //Tank Number ddl
+        $("#ddlTankNumber").select2({
+            minimumInputLength: 1,
+            cache: false,
+            ajax: {
+                url: "/Tank/PopulateEquipment",
+                dataType: 'json',
+                quietMillis: 650,
+                data: function (term) {
+                    return {
+                        searchTerm: term // search term
+                    };
+                },
+                results: function (data) {
+                    return { results: data };
+                }
+            }
+        });
+
+        $(function () {
+            $('.datetimepicker').datetimepicker({
+                format: 'm/d/Y H:i'
+            });
+        });
+
+        function CopyOverValues() { }
+        $("#btnCopyOver").click(function () {
+            $('#txtChassis').val($('#txtLMChassis').val());
+            $('#txtProduct').val($('#txtLMProduct').val());
+        });
+
+        $("#ddlTankNumber").change(function () {
+            var theSelectionId = $("#ddlTankNumber").select2('data').id;
+            var theSelectionText = $("#ddlTankNumber").select2('data').text; 
+            $.ajax({
+                url: "/Dispatch/LoadLastMove?strTankNumber=" + theSelectionText,
+                dataType: 'json',
+                method: 'GET',
+                success: function (response) {
+                    if (response) {
+                        //console.log('response ' + response.LoadStatusTypeCD);
+                        $("#txtLMDate").val(response.DispatchStartDt);
+                        $("#txtLMChassis").val(response.ChassisEquipmentAN);
+                        $("#txtLMProduct").val(response.ProductDS);
+                        $("#txtLMDriver").val(response.Driver);
+                        $("#DriverID").val(response.DriverID);
+                        $("#txtLMTO").val(response.ToLocationDS);
+                        $("#txtLMChargeBlock").val(response.ChargeBlockLocationDS);
+                        $("#txtLMChargeCode").val(response.ChargeCodeAN);
+                        $("#txtLMShipment").val(response.ShipmentAN);
+                        $("#txtLMFittings").val(response.FittingDS);
+                        $("#txtLMContact").val(response.ContactNM);
+                        $("#ContactID").val(response.ContactID);
+                        //$("#ddlCurrentLocation").select2("data", { id: response.LocationID, text: response.LocationDS });
+                    }
+                    else
+                    {
+                        $("#txtLMDate").val('');
+                        $("#txtLMChassis").val('');
+                        $("#txtLMProduct").val('');
+                        $("#txtLMDriver").val('');
+                        $("#DriverID").val('');
+                        $("#txtLMTO").val('');
+                        $("#txtLMChargeBlock").val('');
+                        $("#txtLMChargeCode").val('');
+                        $("#txtLMShipment").val('');
+                        $("#txtLMFittings").val('');
+                        $("#txtLMContact").val('');
+                        $("#ContactID").val('');
+                    }
+                }
+            });
+        });
+
+    </script>    
+}
